@@ -16,7 +16,7 @@ Foundation.DataTypes = {
 };
 
 Kit.DataTypes = {
-    IndexPath: require('./src/Kit/DataTypes/EdgeInsets')
+    EdgeInsets: require('./src/Kit/DataTypes/EdgeInsets')
 };
 Kit.KitConstants = {
     IndexPath: require('./src/Kit/KitConstants')
