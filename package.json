@@ -1,0 +1,20 @@
+{
+  "name": "JSCoreGraphics",
+  "version": "0.0.1",
+  "description": "iOS CoreGraphic Geometry port to javascript",
+  "main": "index.js",
+  "keywords": [
+    "CoreGraphics",
+    "Port",
+    "Javascript"
+  ],
+  "author": "David M Freese <davidmfreese@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "mocha ./test/ --recursive"
+  },
+  "dependencies": {
+    "tcomb": "~1.0.0",
+    "tcomb-validation": "^0.3.0"
+  }
+}
