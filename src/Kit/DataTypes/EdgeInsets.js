@@ -1,4 +1,4 @@
-var t = require('tcomb');
+var t = require('tcomb-validation');
 
 var EdgeInsets = t.struct({
     "top": t.Num,

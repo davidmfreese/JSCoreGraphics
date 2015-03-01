@@ -1,4 +1,4 @@
-var t = require('tcomb');
+var t = require('tcomb-validation');
 
 var IndexPath = t.struct({
     row: t.Num,

@@ -1,4 +1,4 @@
-var t = require('tcomb');
+var t = require('tcomb-validation');
 
 var Vector = t.struct({
     dx: t.Num,
