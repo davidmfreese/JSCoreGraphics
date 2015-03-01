@@ -1,4 +1,4 @@
-var tcombValidate = require('tcomb-validation');
+var t = require('tcomb-validation');
 
 var Point = require('./DataTypes/Point');
 var Size = require('./DataTypes/Size');
@@ -41,7 +41,7 @@ Geometry.sizeEqualToSize = function(size1, size2) {
 };
 Geometry.rectEqualToRect = function(rect1, rect2) {
     if(this.shouldValidate) { Rect.is(rect1); Rect.is(rect1); }
-    return this.pointEqualToPoint(rect1.origin, rect2.orgin) && this.sizeEqualToSize(rect1.size, rect2.size);
+    return this.pointEqualToPoint(rect1.origin, rect2.origin) && this.sizeEqualToSize(rect1.size, rect2.size);
 };
 
 Geometry.rectGetMinX = function(rect) {
@@ -80,11 +80,6 @@ Geometry.rectContainsPoint = function(rect, point) {
 };
 Geometry.rectContainsRect = function(rect, possibleInnerRect) {
     if(this.shouldValidate) { Rect.is(rect); Rect.is(possibleInnerRect); }
-    var minX = this.rectGetMinX(possibleInnerRect);
-    var maxX = this.rectGetMaxX(possibleInnerRect);
-    var minY = this.rectGetMinY(possibleInnerRect);
-    var maxY = this.rectGetMaxY(possibleInnerRect);
-
     var upperLeftPoint = possibleInnerRect.origin;
     var lowerLeftPoint = new Point({
         x: this.rectGetMaxX(possibleInnerRect),
@@ -97,11 +92,11 @@ Geometry.rectContainsRect = function(rect, possibleInnerRect) {
 Geometry.isPointZero = function(point) {
     if(this.shouldValidate) { Point.is(point); }
     return this.pointEqualToPoint(point, Constants.pointZero);
-}
+};
 Geometry.isSizeZero = function(size) {
     if(this.shouldValidate) { Size.is(size); }
     return this.sizeEqualToSize(size, Constants.sizeZero);
-}
+};
 Geometry.isRectZero = function(rect) {
     if(this.shouldValidate) { Rect.is(rect); }
     return this.rectEqualToRect(rect, Constants.rectZero);
