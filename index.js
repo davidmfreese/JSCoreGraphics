@@ -27,6 +27,3 @@ module.exports = {
     Foundation: Foundation,
     Kit: Kit
 };
-
-module.exports = exports;
-
