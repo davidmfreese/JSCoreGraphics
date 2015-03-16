@@ -1,9 +1,9 @@
-var t = require('tcomb-validation');
+var t = require("tcomb-validation");
 
 var IndexPath = t.struct({
     row: t.Num,
     section: t.maybe(t.Num)
-}, 'IndexPath');
+}, "IndexPath");
 
 module.exports = IndexPath;
 

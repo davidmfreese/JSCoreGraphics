@@ -11,10 +11,15 @@
   "author": "David M Freese <davidmfreese@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "mocha ./test/ --recursive"
+    "test": "mocha ./test/ --recursive",
+    "build": "browserify index.js --debug --standalone JSCoreGraphics | exorcist dist/JSCoreGraphics.js.map > dist/JSCoreGraphics.js"
   },
   "dependencies": {
     "tcomb": "~1.0.0",
     "tcomb-validation": "^0.3.0"
+  },
+  "devDependencies": {
+    "browserify": "^9.0.3",
+    "exorcist": "^0.1.6"
   }
 }

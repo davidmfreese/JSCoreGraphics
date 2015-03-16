@@ -1,9 +1,9 @@
-var t = require('tcomb-validation');
+var t = require("tcomb-validation");
 
 var Size = t.struct({
     height: t.Num,
     width: t.Num
-}, 'Size', true);
+}, "Size", true);
 
 //var SizeFuncs = t.struct({
 //    isSizeZero: t.func(Size, t.Bool)

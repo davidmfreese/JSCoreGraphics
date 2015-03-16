@@ -1,10 +1,10 @@
-var t = require('tcomb-validation');
+var t = require("tcomb-validation");
 
-var Point = require('./DataTypes/Point');
-var Size = require('./DataTypes/Size');
-var Rect = require('./DataTypes/Rect');
-var Vector = require('./DataTypes/Vector');
-var Constants = require('./GeometryConstants');
+var Point = require("./DataTypes/Point");
+var Size = require("./DataTypes/Size");
+var Rect = require("./DataTypes/Rect");
+var Vector = require("./DataTypes/Vector");
+var Constants = require("./GeometryConstants");
 
 var Geometry = {};
 

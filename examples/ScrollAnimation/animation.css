@@ -1,0 +1,12 @@
+#animatable {
+    background-color: yellow;
+    position:absolute;
+}
+
+#animateButton {
+    position:fixed;
+    top:10px;
+    left:10px;
+    width:100px;
+    height:40px;
+}

@@ -1,4 +1,4 @@
-var EdgeInsets = require('./DataTypes/EdgeInsets');
+var EdgeInsets = require("./DataTypes/EdgeInsets");
 
 var INSETS_ZERO = new EdgeInsets({top: 0, bottom: 0, left: 0, right: 0});
 

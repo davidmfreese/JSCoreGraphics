@@ -1,8 +1,8 @@
-var t = require('tcomb-validation');
+var t = require("tcomb-validation");
 
 var Vector = t.struct({
     dx: t.Num,
     dy: t.Num
-}, 'Vector');
+}, "Vector");
 
 module.exports = Vector;

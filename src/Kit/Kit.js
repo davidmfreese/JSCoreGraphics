@@ -1,5 +1,5 @@
-var EdgeInsets = require('./DataTypes/EdgeInsets');
-var Constants = require('./KitConstants');
+var EdgeInsets = require("./DataTypes/EdgeInsets");
+var Constants = require("./KitConstants");
 var Kit = {};
 
 Kit.edgeInsetsZero = Constants.INSETS_ZERO;
