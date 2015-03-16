@@ -5,6 +5,7 @@ var Point = require("../../CoreGraphics/Geometry/DataTypes/Point");
 var CAAnimation = require("../../Animations/CAAnimation");
 var AnimationEasingType = require("../../Animations/AnimationEasingType");
 
+//TODO: add more animatable properties
 var AnimatableStyleProps = {
     top: 1,
     left: 2,
@@ -20,7 +21,57 @@ function AnimatableProp(propertyName, startValue, endValue, appendValue, duratio
     this.duration = duration;
     this.currentValue = startValue;
     this.appendValue = appendValue;
+    this.updateCurrentValue = function(rate) {
+        this.currentValue = this.startValue - rate * (this.startValue - this.endValue);
+    }.bind(this);
 }
+
+function updateAnimatableProps(view, animatableProps) {
+    var newFrame = new Rect({
+        origin: new Point({
+            x: view.frame.origin.x,
+            y: view.frame.origin.y
+        }, true),
+        size: new Size({
+            width: view.frame.size.width,
+            height: view.frame.size.height
+        }, true)
+    }, true);
+
+    var newScrollPosition = new Point({
+        x: view.scrollPosition.x,
+        y: view.scrollPosition.y
+    }, true)
+
+    for(var i = 0; i < animatableProps.length; i++) {
+        var prop = animatableProps[i];
+        if(prop.propertyName === "left") {
+            newFrame.origin.x = prop.currentValue;
+        }
+        else if(prop.propertyName === "top") {
+            newFrame.origin.y = prop.currentValue;
+        }
+        else if(prop.propertyName === "width") {
+            newFrame.size.width = prop.currentValue;
+        }
+        else if(prop.propertyName === "height") {
+            newFrame.size.height = prop.currentValue;
+        }
+        else if(prop.propertyName === "scrollLeft") {
+            newScrollPosition.x = prop.currentValue;
+        }
+        else if(prop.propertyName === "scrollRight") {
+            newScrollPosition.y = prop.currentValue;
+        }
+        else if(prop.propertyName === "opacity") {
+            view.alpha = prop.currentValue;
+        }
+     }
+
+    view.frame = newFrame;
+    view.scrollPosition = newScrollPosition;
+
+};
 
 var View = t.struct({
     frame: Rect,
@@ -49,7 +100,6 @@ View.prototype.animateWithDurationAndOptions = function(duration, delay, animati
         if (animations["frame"].origin.y != this.frame.origin.y) {
             animatableProps.push(new AnimatableProp("top", this.frame.origin.y, animations["frame"].origin.y, "px", duration));
         }
-
         if (animations["frame"].size.width != this.frame.size.width) {
             animatableProps.push(new AnimatableProp("right", this.frame.origin.x + this.frame.size.width, animations["frame"].origin.x + animations["frame"].size.width, "px", duration));
         }
@@ -81,15 +131,15 @@ View.prototype.animateWithDurationAndOptions = function(duration, delay, animati
         for (var i = 0; i < animatableProps.length; i++) {
             var stepFunction = (function(animatable) {
                 return function (rate) {
+                    animatable.updateCurrentValue(rate);
                     if(AnimatableStyleProps[animatable.propertyName] > 0) {
-                        that.domElement.style[animatable.propertyName] = animatable.startValue - rate * (animatable.startValue - animatable.endValue) + animatable.appendValue;
+                        that.domElement.style[animatable.propertyName] = animatable.currentValue + animatable.appendValue;
                     }
                     else {
-                        that.domElement[animatable.propertyName] = animatable.startValue - rate * (animatable.startValue - animatable.endValue) + animatable.appendValue;
+                        that.domElement[animatable.propertyName] = animatable.currentValue + animatable.appendValue;
                     }
                 }
             })(animatableProps[i]);
-
             stepFunctions.push(stepFunction);
         }
 
@@ -97,6 +147,8 @@ View.prototype.animateWithDurationAndOptions = function(duration, delay, animati
             for (var i = 0; i < stepFunctions.length; i++) {
                 stepFunctions[i](rate);
             }
+
+            updateAnimatableProps(that, animatableProps);
         };
 
         that.currentAnimation = new CAAnimation(duration, easingType, combinedStepFunction,

@@ -26,34 +26,39 @@ var animatableView = new View({
     domElement: animatable
 }, true);//make mutable
 
-var opacity = 1.0;
+var isAnimating = false;
+var upperRight = true;
 function onAnimate() {
-    var plusX = 25;
-    var plusY = 25;
+    if (isAnimating === true) {
+        animatableView.cancelCurrentAnimation();
+        setTimeout(function () {
+            upperRight = !upperRight;
+            isAnimating = false;
+            onAnimate();
+        }, 60);
+    }
 
+    isAnimating = true;
     var nextFrame = new Rect({
         origin: new Point({
-            x: animatableView.frame.origin.x + plusX,
-            y: animatableView.frame.origin.y + plusY
+            x: upperRight ? window.innerWidth - animatableView.frame.size.width - 10 : 0,
+            y: upperRight ? window.innerHeight - animatableView.frame.size.height - 10 : 0
         }),
         size: animatableView.frame.size
     });
-
-
-    var nextOpacity = opacity == 1 ? 0.25 : 1;
+    var nextOpacity = upperRight ? 0.10 : 1;
     var animations = {
         frame: nextFrame,
         alpha: nextOpacity
     };
 
-    animateButton.disabled = true;
-    animatableView.animateWithDurationAndOptions(200, 0, AnimationEasingType.AnimationEastInOutCubic, animations, function(success) {
-        animateButton.disabled = false;
-        animatableView.frame = nextFrame;
-        animatableView.alpha = nextOpacity;
-        opacity = nextOpacity;
+    upperRight = !upperRight;
+    animatableView.animateWithDurationAndOptions(1000, 0, AnimationEasingType.AnimationEastInOutCubic, animations, function (success) {
         console.log(success);
+        isAnimating = false;
     });
+
+
 }
 
 animateButton.addEventListener("click", onAnimate);
