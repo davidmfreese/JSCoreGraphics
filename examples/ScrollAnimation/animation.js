@@ -26,13 +26,20 @@ var animatableView = new View({
     domElement: animatable
 }, true);//make mutable
 
-function onAnimate() {
-    var plusScrollLocationY = 1000;
-    animatableView.scrollPosition = new Point({
-        x: Number(animatableView.domElement.scrollLeft),
-        y: Number(animatableView.domElement.scrollTop)
+animatable.onscroll = function () {
+    if (animating) {
+        return;
+    }
+    animatableView.scrollPosition = new Point({ //Todo: update the values based on the element location??
+        x: animatable.scrollLeft,
+        y: animatable.scrollTop
     });
+};
 
+var animating = false;
+function onAnimate() {
+    animating = true;
+    var plusScrollLocationY = 1000;
     var newScrollPosition = new Point({ //Todo: update the values based on the element location??
         x: animatableView.scrollPosition.x,
         y: animatableView.scrollPosition.y + plusScrollLocationY
@@ -43,9 +50,9 @@ function onAnimate() {
     };
 
     animateButton.disabled = true;
-    animatableView.animateWithDurationAndOptions(500, 0, AnimationEasingType.AnimationEaseOutQuad, animations, function(success) {
+    animatableView.animateWithDurationAndOptions(500, 0, AnimationEasingType.AnimationEaseOutQuad, animations, function (success) {
         animateButton.disabled = false;
-        animatableView.scrollPosition = newScrollPosition;
+        animating = false;
         console.log(success);
     });
 }

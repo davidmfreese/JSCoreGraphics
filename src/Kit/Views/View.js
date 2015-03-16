@@ -60,7 +60,7 @@ function updateAnimatableProps(view, animatableProps) {
         else if (prop.propertyName === "scrollLeft") {
             newScrollPosition.x = prop.currentValue;
         }
-        else if (prop.propertyName === "scrollRight") {
+        else if (prop.propertyName === "scrollTop") {
             newScrollPosition.y = prop.currentValue;
         }
         else if (prop.propertyName === "opacity") {
