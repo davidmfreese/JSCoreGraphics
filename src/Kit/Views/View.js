@@ -21,7 +21,7 @@ function AnimatableProp(propertyName, startValue, endValue, appendValue, duratio
     this.duration = duration;
     this.currentValue = startValue;
     this.appendValue = appendValue;
-    this.updateCurrentValue = function(rate) {
+    this.updateCurrentValue = function (rate) {
         this.currentValue = this.startValue - rate * (this.startValue - this.endValue);
     }.bind(this);
 }
@@ -43,30 +43,30 @@ function updateAnimatableProps(view, animatableProps) {
         y: view.scrollPosition.y
     }, true)
 
-    for(var i = 0; i < animatableProps.length; i++) {
+    for (var i = 0; i < animatableProps.length; i++) {
         var prop = animatableProps[i];
-        if(prop.propertyName === "left") {
+        if (prop.propertyName === "left") {
             newFrame.origin.x = prop.currentValue;
         }
-        else if(prop.propertyName === "top") {
+        else if (prop.propertyName === "top") {
             newFrame.origin.y = prop.currentValue;
         }
-        else if(prop.propertyName === "width") {
+        else if (prop.propertyName === "width") {
             newFrame.size.width = prop.currentValue;
         }
-        else if(prop.propertyName === "height") {
+        else if (prop.propertyName === "height") {
             newFrame.size.height = prop.currentValue;
         }
-        else if(prop.propertyName === "scrollLeft") {
+        else if (prop.propertyName === "scrollLeft") {
             newScrollPosition.x = prop.currentValue;
         }
-        else if(prop.propertyName === "scrollRight") {
+        else if (prop.propertyName === "scrollRight") {
             newScrollPosition.y = prop.currentValue;
         }
-        else if(prop.propertyName === "opacity") {
+        else if (prop.propertyName === "opacity") {
             view.alpha = prop.currentValue;
         }
-     }
+    }
 
     view.frame = newFrame;
     view.scrollPosition = newScrollPosition;
@@ -80,11 +80,11 @@ var View = t.struct({
     domElement: t.Obj //no way to check this is really a dom element?
 }, "View");
 
-View.prototype.animateWithDurationAndOptions = function(duration, delay, animationEasingType, animations, completion) {
+View.prototype.animateWithDurationAndOptions = function (duration, delay, animationEasingType, animations, completion) {
     var easingType = AnimationEasingType.AnimationEaseLinear;
-    for(var animationEasingTypeKey in AnimationEasingType) {
+    for (var animationEasingTypeKey in AnimationEasingType) {
         var value = AnimationEasingType[animationEasingTypeKey];
-        if(animationEasingType === value ) {
+        if (animationEasingType === value) {
             easingType = value;
         }
     }
@@ -129,10 +129,10 @@ View.prototype.animateWithDurationAndOptions = function(duration, delay, animati
     setTimeout(function () {
         var stepFunctions = [];
         for (var i = 0; i < animatableProps.length; i++) {
-            var stepFunction = (function(animatable) {
+            var stepFunction = (function (animatable) {
                 return function (rate) {
                     animatable.updateCurrentValue(rate);
-                    if(AnimatableStyleProps[animatable.propertyName] > 0) {
+                    if (AnimatableStyleProps[animatable.propertyName] > 0) {
                         that.domElement.style[animatable.propertyName] = animatable.currentValue + animatable.appendValue;
                     }
                     else {
@@ -152,7 +152,7 @@ View.prototype.animateWithDurationAndOptions = function(duration, delay, animati
         };
 
         that.currentAnimation = new CAAnimation(duration, easingType, combinedStepFunction,
-            function(success) {
+            function (success) {
                 that.currentAnimation = undefined;
                 completion(success);
             }
@@ -160,14 +160,14 @@ View.prototype.animateWithDurationAndOptions = function(duration, delay, animati
     }, delay);
 };
 
-View.prototype.cancelCurrentAnimation = function() {
-    if(this.currentAnimation != null) {
+View.prototype.cancelCurrentAnimation = function () {
+    if (this.currentAnimation != null) {
         this.currentAnimation.cancelAnimation();
     }
 };
 
-View.prototype.finishCurrentAnimation = function() {
-    if(this.currentAnimation != null) {
+View.prototype.finishCurrentAnimation = function () {
+    if (this.currentAnimation != null) {
         this.currentAnimation.finishAnimation();
     }
 };

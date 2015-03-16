@@ -4,7 +4,7 @@ var Kit = {};
 
 Kit.edgeInsetsZero = Constants.INSETS_ZERO;
 
-Kit.edgeInsetsMake = function(left, top, right, bottom) {
+Kit.edgeInsetsMake = function (left, top, right, bottom) {
     return new EdgeInsets({
         left: left,
         top: top,
