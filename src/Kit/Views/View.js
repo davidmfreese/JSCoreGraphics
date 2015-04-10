@@ -4,6 +4,7 @@ var Rect = require("../../CoreGraphics/Geometry/DataTypes/Rect");
 var Point = require("../../CoreGraphics/Geometry/DataTypes/Point");
 var CAAnimation = require("../../Animations/CAAnimation");
 var AnimationEasingType = require("../../Animations/AnimationEasingType");
+var Size = require("../../CoreGraphics/Geometry/DataTypes/Size");
 
 //TODO: add more animatable properties
 var AnimatableStyleProps = {
@@ -11,7 +12,9 @@ var AnimatableStyleProps = {
     left: 2,
     bottom: 3,
     right: 4,
-    opacity: 5
+    opacity: 5,
+    height: 6,
+    width:7
 };
 
 function AnimatableProp(propertyName, startValue, endValue, appendValue, duration) {
@@ -80,6 +83,23 @@ var View = t.struct({
     domElement: t.Obj //no way to check this is really a dom element?
 }, "View");
 
+View.prototype.updateToCurrentProperties = function() {
+    this.domElement.style["position"] = "absolute";
+    if(this.scrollPosition) {
+        this.domElement["scrollTop"] = this.scrollPosition.y;
+        this.domElement["scrollLeft"] = this.scrollPosition.x;
+    }
+    if(this.frame) {
+        this.domElement.style["left"] = this.frame.origin.x + "px";
+        this.domElement.style["top"] = this.frame.origin.y + "px";
+        this.domElement.style["width"] = this.frame.size.width + "px";
+        this.domElement.style["height"] = this.frame.size.height + "px";
+    }
+    if(this.alpha) {
+        this.domElement.style["opacity"] = this.alpha;
+    }
+};
+
 View.prototype.animateWithDurationAndOptions = function (duration, delay, animationEasingType, animations, completion) {
     var easingType = AnimationEasingType.AnimationEaseLinear;
     for (var animationEasingTypeKey in AnimationEasingType) {
@@ -101,10 +121,10 @@ View.prototype.animateWithDurationAndOptions = function (duration, delay, animat
             animatableProps.push(new AnimatableProp("top", this.frame.origin.y, animations["frame"].origin.y, "px", duration));
         }
         if (animations["frame"].size.width != this.frame.size.width) {
-            animatableProps.push(new AnimatableProp("right", this.frame.origin.x + this.frame.size.width, animations["frame"].origin.x + animations["frame"].size.width, "px", duration));
+            animatableProps.push(new AnimatableProp("width", this.frame.size.width, animations["frame"].size.width, "px", duration));
         }
         if (animations["frame"].size.height != this.frame.size.height) {
-            animatableProps.push(new AnimatableProp("bottom", this.frame.origin.y + this.frame.size.height, animations["frame"].origin.y + animations["frame"].size.height, "px", duration));
+            animatableProps.push(new AnimatableProp("height", this.frame.size.height, animations["frame"].size.height, "px", duration));
         }
     }
 
